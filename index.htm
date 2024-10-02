@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./layout.css">
+    <link rel="stylesheet" href="./table.css">
+    <link rel="stylesheet" href="./lista.css">
+</head>
+
+<body>
+    <nav>
+
+        <div class="nav-center">
+
+            <h3>Tabel notiuni</h3>
+
+            <ul class="nav-links">
+                <li>
+                    <a href="#win"> Notiuni Win</a>
+                </li>
+                <li>
+                    <a href="#excel"> Notiuni Excel</a>
+                </li>
+
+            </ul>
+        </div>
+
+    </nav>
+
+    <div class="container">
+        <section class="results">
+
+            <div class="results-area">
+                <p class="info-results">
+                    Rezultate tabel notiuni:
+                </p>
+                <p class="value-results">
+                    rezultat
+                </p>
+
+            </div>
+            <p class="descarca">Vezi notiuni stiute si descarca</p>
+
+        </section>
+        <main>
+
+        </main>
+    </div>
+
+    <script>
+        let db_arr = []
+        let ok_arr = []
+        let notok_arr = []
+
+
+        const domparser = new DOMParser();
+        const main = document.querySelector('main')
+        const infoResults = document.querySelector('.results-area .info-results')
+        const result = document.querySelector('.results-area .value-results')
+
+        result.innerHTML = '<== click pe buton pentru sumar'
+        main.innerHTML = 'aaa'
+
+        let parseToArr = (data) => {
+            const doc_parse = domparser.parseFromString(data, "text/html");
+            let table_parse = doc_parse.querySelector('table')
+            const db_array = tableToArr(table_parse)
+            //console.log(db_arr)
+            return db_array
+        }
+
+        let addButtonEvents = (main) => {
+            const lista = main.querySelector('.list-container')
+            lista.addEventListener('click', (ev) => {
+                const targetClassList = ev.target.classList
+                const parentClassList = ev.target.closest('.rand-notiune').classList
+
+                if (targetClassList.contains('btn-ok')) {
+                    parentClassList.add('ok')
+                    parentClassList.remove('not-ok')
+                    //console.log(ev.target.closest('.rand-notiune'))
+                }
+
+                if (targetClassList.contains('btn-false')) {
+
+                    parentClassList.add('not-ok')
+                    parentClassList.remove('ok')
+                    //console.log(ev.target.closest('.rand-notiune'))
+                }
+            })
+
+        }
+
+        let arrToList = (db_arr) => {
+
+            return "<section class='list-container'>" + db_arr.map(el => {
+                return `
+                    <article class='rand-notiune' data-id=${el.id}>
+                        <div class='butoane-notiune'>
+                            <button class="btn btn-ok">🆗</button>
+                            <button class="btn btn-false">⛔</button>
+                        </div>
+                        <div class='nr-crt'>
+                            ${el.nr_crt}
+                        </div>
+                        <div class='notiune'>
+                            ${el.notiune}
+                        </div>
+                        <div class='explicatie'>
+                            ${el.explicatie}
+                        </div>
+                    </article>
+                `
+            }).join('') + '</section>'
+
+        }
+
+        let tableToArr = (table_parse) => {
+
+            let table_rows = Array.from(table_parse.querySelectorAll('tr'))
+
+            return table_rows.map(row => {
+                const cells = row.querySelectorAll('td')
+                let nr_crt = cells[0].textContent.replace(/\n/g, '').trim()
+                let notiune = cells[1].textContent.replace(/\n/g, '').trim()
+                let explicatie = cells[2].textContent.replace(/\n/g, '').trim()
+                let id = 1 || parseInt(cells[3].textContent.replace(/\n/g, '').trim()) // de adaugat id la noile randuri
+
+                return {
+                    id,
+                    nr_crt,
+                    notiune,
+                    explicatie,
+                }
+            })
+        }
+
+        let rezultateLista = (lista) => {
+            infoResults.addEventListener('click', () => {
+                let contorOk = 0
+                let contorNotOk = 0
+                ok_arr = []
+                notok_arr = []
+                //console.log(lista)
+                let randuri = lista.querySelectorAll('.rand-notiune')
+                let total = randuri.length - 1 //mai putin capul de tabel
+                randuri.forEach(el => {
+                    if (el.classList.contains('ok')) {
+                        contorOk++
+                        let id_ok = parseInt(el.dataset.id)
+                        let elemOk = db_arr.find((el) => el.id === id_ok) //cauta dupa id_ok in vector si adauga elementul in vectorul pentru stiute
+                        ok_arr.push(elemOk)
+                        //console.log(elemOk)
+
+
+
+                    }
+                    if (el.classList.contains('not-ok')) {
+                        contorNotOk++
+
+                        let id_notok = parseInt(el.dataset.id)
+                        let elemNotOk = db_arr.find((el) => el.id === id_notok) //cauta dupa id_ok in vector si adauga elementul in vectorul pentru stiute
+                        notok_arr.push(elemNotOk)
+                    }
+
+                })
+
+                console.log(ok_arr)
+                console.log(notok_arr)
+
+                //genereaza o noua lista cu cei doi vectori
+                //adauga eventListener pe butonul descarca ca sa se incarce in main
+                // pe butonul back adauga un event listener care sa porneasca functia cu fetch
+                // de rezolvat problema cu baza de date, fetch cu race sau alegere fisier inainte de fetch
+                // si la fel pentru tipuri de notiuni pentru Win si Excel
+
+                result.innerHTML = `<h3> <span class="span-ok">✔: ${contorOk}</span>, <span class="span-notok">✋: ${contorNotOk} </span>  din ${total}</h3>`
+                console.log(contorOk)
+            })
+
+        }
+
+
+
+        fetch('./index_db2.htm').then(res => res.text())
+            .then(data => {
+
+                db_arr = parseToArr(data) //conversie din tabel in vector
+                main.innerHTML = arrToList(db_arr)//conversie vector in lista cu notiuni
+                addButtonEvents(main)//functionalitate pentru ok, not-ok
+
+                let lista = main.querySelector('.list-container')//lista este acum actualizata sau se actualizeaza
+                rezultateLista(lista)//preluare clase ok din lista, se adauga event listener pe butonul rezultate
+            })
+    </script>
+</body>
+
+</html>

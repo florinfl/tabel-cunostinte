@@ -1,0 +1,17 @@
+table {
+    border: 2px solid #555;
+
+}
+
+table td {
+    border: 1px solid #888;
+}
+
+.stiu {
+    background-color: lightgreen;
+    margin-bottom: 10px;
+}
+
+.nu_stiu {
+    background-color: rgb(251, 251, 2);
+}

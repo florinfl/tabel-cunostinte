@@ -1,0 +1,58 @@
+.rand-notiune {
+    background-color: rgb(204, 204, 204);
+    margin-bottom: 1.2rem;
+    padding: 0.5rem;
+
+    display: flex;
+    gap: 1rem;
+    /* justify-content: space-between; */
+    line-height: 1.5rem;
+    border: 0.5rem solid transparent;
+}
+
+.nr-crt {
+
+    flex: 0 0 20px;
+}
+
+.explicatie {
+    text-indent: 1.5rem;
+}
+
+.notiune {
+
+    flex: 0 0 20%;
+    max-width: 10rem;
+}
+
+.butoane-notiune {
+    display: flex;
+    flex-direction: column;
+
+    flex: 0 0 20px;
+    /* border: 2px solid blue; */
+
+}
+
+.butoane-notiune button {
+    margin-bottom: 0.5rem;
+}
+
+section.list-container article:first-of-type {
+    background-color: hsl(0, 0%, 27%);
+    color: hsl(24, 100%, 58%);
+    font-weight: 900;
+    font-size: 1.2rem;
+}
+
+section.list-container article:first-of-type .butoane-notiune {
+    visibility: hidden;
+}
+
+.ok {
+    border-color: rgb(147, 210, 147);
+}
+
+.not-ok {
+    border-color: rgb(234, 195, 68);
+}

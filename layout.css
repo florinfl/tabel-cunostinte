@@ -1,0 +1,103 @@
+* {
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+}
+
+body {
+    font-family: 'Times New Roman', Times, serif;
+}
+
+nav {
+    /* border: 2px solid red; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+main {
+    /* border: 2px solid rgb(161, 161, 248); */
+    padding: 15px;
+}
+
+.nav-center {
+    /* border: 2px solid green; */
+    height: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+}
+
+.nav-links li {
+    margin-left: 30px;
+}
+
+
+.nav-links a {
+    color: orange;
+    text-decoration: none;
+    text-transform: capitalize;
+    font-weight: 700;
+}
+
+.nav-links a:hover {
+    color: rgb(128, 238, 32);
+
+}
+
+/* results */
+
+section.results {
+    /* background-color: rgb(204, 204, 204); */
+
+    padding: 0.5rem;
+    /* border: 2px solid red; */
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+
+}
+
+
+.results-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    font-weight: 900;
+    /* border: 2px solid orange; */
+}
+
+.descarca,
+.info-results {
+    font-size: 1.1rem;
+
+    border-radius: 3px;
+    border-width: 0px;
+    background-color: rgb(168, 168, 168);
+    color: rgb(0, 95, 179);
+    font-weight: 900;
+
+    font-family: 'Times New Roman', Times, serif;
+    padding: 0.2rem 0.5rem;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.span-ok {
+    color: green
+}
+
+.span-notok {
+    color: orange
+}
